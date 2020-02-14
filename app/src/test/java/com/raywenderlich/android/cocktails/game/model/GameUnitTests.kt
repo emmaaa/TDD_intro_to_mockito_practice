@@ -40,7 +40,7 @@ class GameUnitTests {
 
 
     @Test
-    fun `when incrementing score should increment current score`() {
+    fun `incrementScore increments current score`() {
         val game = Game(emptyList(), 0)
 
         game.incrementScore()
@@ -49,7 +49,7 @@ class GameUnitTests {
     }
 
     @Test
-    fun `when incrementing score above high score should also increment high score`() {
+    fun `incrementScore also increments high score when above high score`() {
         val game = Game(emptyList(), 0)
 
         game.incrementScore()
@@ -58,7 +58,7 @@ class GameUnitTests {
     }
 
     @Test
-    fun whenIncrementingScore_belowHighScore_shouldNotIncrementHighScore() {
+    fun `incrementScore does not increment high score when below high score `() {
         val game = Game(emptyList(), 10)
 
         game.incrementScore()
@@ -67,7 +67,7 @@ class GameUnitTests {
     }
 
     @Test
-    fun whenGettingNextQuestion_shouldReturnIt() {
+    fun `nextQuestion returns next question`() {
         val game = Game(questions)
 
         val nextQuestion = game.nextQuestion()
@@ -76,7 +76,7 @@ class GameUnitTests {
     }
 
     @Test
-    fun whenGettingNextQuestion_withoutMoreQuestions_shouldReturnNull() {
+    fun `next question returns null when there are no more questions`() {
         val game = Game(questions)
 
         game.nextQuestion()
