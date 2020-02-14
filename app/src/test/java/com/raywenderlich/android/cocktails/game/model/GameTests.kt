@@ -33,43 +33,14 @@ package com.raywenderlich.android.cocktails.game.model
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
-import org.junit.Assert.*
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
 
-class GameUnitTests {
+class GameTests {
 
     private val question1 = Question("CORRECT", "INCORRECT")
     private val questions = listOf(question1)
-
-
-    @Test
-    fun `incrementScore increments current score`() {
-        val game = Game(emptyList(), 0)
-
-        game.incrementScore()
-
-        assertEquals("Current score should have been 1", 1, game.currentScore)
-    }
-
-    @Test
-    fun `incrementScore also increments high score when above high score`() {
-        val game = Game(emptyList(), 0)
-
-        game.incrementScore()
-
-        assertEquals(1, game.highestScore)
-    }
-
-    @Test
-    fun `incrementScore does not increment high score when below high score `() {
-        val game = Game(emptyList(), 10)
-
-        game.incrementScore()
-
-        assertEquals(10, game.highestScore)
-    }
 
     @Test
     fun `nextQuestion returns next question`() {
@@ -100,15 +71,4 @@ class GameUnitTests {
         verify(question).answer(eq("OPTION"))
     }
 
-    @Test
-    fun `correct answer increments current score`() {
-        val question = mock<Question>()
-
-        whenever(question.answer(anyString())).thenReturn(true)
-        val game = Game(listOf(question))
-
-        game.answer(question, "OPTION")
-
-        assertEquals(1, game.currentScore)
-    }
 }
