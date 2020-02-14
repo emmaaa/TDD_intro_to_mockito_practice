@@ -7,13 +7,14 @@ import org.junit.Test
 
 class RepositoryUnitTests {
 
+    private val api: CocktailsApi = mock()
+    private val sharedPreferences: SharedPreferences = mock()
+    private val repository = CocktailsRepositoryImpl(api, sharedPreferences)
+    private val sharedPreferencesEditor: SharedPreferences.Editor = mock()
+    private val score = 100
+
     @Test
     fun `high score is stored to preferences`() {
-        val api: CocktailsApi = mock()
-        val sharedPreferencesEditor: SharedPreferences.Editor = mock()
-        val sharedPreferences: SharedPreferences = mock()
-        val repository = CocktailsRepositoryImpl(api, sharedPreferences)
-        val score = 100
         whenever(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor)
 
         repository.saveHighScore(score)
@@ -23,4 +24,12 @@ class RepositoryUnitTests {
             verify(sharedPreferencesEditor).apply()
         }
     }
+
+    @Test
+    fun `score can be read from preferences`() {
+        repository.getHighScore()
+
+        verify(sharedPreferences).getInt(any(), any())
+    }
+
 }

@@ -59,6 +59,8 @@ class CocktailsRepositoryImpl(
         editor.apply()
     }
 
+    override fun getHighScore(): Int = sharedPreferences.getInt(HIGH_SCORE_KEY, 0)
+
     private fun wrapCallback(callback: RepositoryCallback<List<Cocktail>, String>) =
             object : Callback<CocktailsContainer> {
                 override fun onResponse(call: Call<CocktailsContainer>?,
@@ -77,4 +79,5 @@ class CocktailsRepositoryImpl(
                     callback.onError("Couldn't get cocktails")
                 }
             }
+
 }
