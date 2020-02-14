@@ -30,6 +30,9 @@
 
 package com.raywenderlich.android.cocktails.game.model
 
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -85,5 +88,14 @@ class GameUnitTests {
         assertNull(nextQuestion)
     }
 
+    @Test
+    fun `given answer is delegated to its question`() {
+        val question = mock<Question>()
+        val game = Game(listOf(question))
+
+        game.answer(question, "OPTION")
+
+        verify(question).answer(eq("OPTION"))
+    }
 
 }
