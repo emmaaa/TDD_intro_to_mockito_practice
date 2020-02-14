@@ -5,7 +5,7 @@ import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.android.cocktails.common.network.CocktailsApi
 import org.junit.Test
 
-class RepositoryUnitTests {
+class RepositoryTests {
 
     private val api: CocktailsApi = mock()
     private val sharedPreferences: SharedPreferences = mock()

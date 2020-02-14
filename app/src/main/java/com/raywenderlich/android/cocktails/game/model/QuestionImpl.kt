@@ -30,45 +30,28 @@
 
 package com.raywenderlich.android.cocktails.game.model
 
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertSame
-import org.junit.Test
+class QuestionImpl(
+        private val correctOption: String,
+        private val incorrectOption: String
+) : Question {
 
-class GameTests {
+    var answeredOption: String? = null
+        private set
 
-    private val question1 = QuestionImpl("CORRECT", "INCORRECT")
-    private val questions = listOf(question1)
+    private val isAnsweredCorrectly: Boolean
+        get() = correctOption == answeredOption
 
-    @Test
-    fun `nextQuestion returns next question`() {
-        val game = Game(questions)
+    override fun answer(option: String): Boolean {
 
-        val nextQuestion = game.nextQuestion()
+        if (option != correctOption && option != incorrectOption)
+            throw IllegalArgumentException("Not a valid option")
 
-        assertSame(question1, nextQuestion)
+        answeredOption = option
+
+        return isAnsweredCorrectly
     }
 
-    @Test
-    fun `next question returns null when there are no more questions`() {
-        val game = Game(questions)
-
-        game.nextQuestion()
-        val nextQuestion = game.nextQuestion()
-
-        assertNull(nextQuestion)
-    }
-
-    @Test
-    fun `given answer is delegated to its question`() {
-        val question = mock<Question>()
-        val game = Game(listOf(question))
-
-        game.answer(question, "OPTION")
-
-        verify(question).answer(eq("OPTION"))
-    }
-
+    override fun getOptions(sort: (List<String>) -> List<String>) =
+            sort(listOf(correctOption, incorrectOption))
 }
+

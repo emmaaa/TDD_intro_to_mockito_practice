@@ -3,17 +3,16 @@ package com.raywenderlich.android.cocktails.game.model
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
 
 class ScoreTests {
 
-    private val score = Score()
+    private val question = MockQuestion()
 
     @Test
     fun `incrementScore increments current score`() {
+        val score = Score()
         score.increment()
 
         assertEquals("Current score should have been 1", 1, score.current)
@@ -21,6 +20,7 @@ class ScoreTests {
 
     @Test
     fun `incrementScore also increments high score when above high score`() {
+        val score = Score()
         score.increment()
 
         assertEquals(1, score.highest)
@@ -37,22 +37,16 @@ class ScoreTests {
 
     @Test
     fun `correct answer increments current score`() {
-        val question = mock<Question>()
-
-        whenever(question.answer(anyString())).thenReturn(true)
         val score = mock<Score>()
         val game = Game(listOf(question), score)
 
-        game.answer(question, "OPTION")
+        game.answer(question, "CORRECT")
 
         verify(score).increment()
     }
 
     @Test
     fun `incorrect answer does not increment current score`() {
-        val question = mock<Question>()
-
-        whenever(question.answer(anyString())).thenReturn(false)
         val score = mock<Score>()
         val game = Game(listOf(question))
 

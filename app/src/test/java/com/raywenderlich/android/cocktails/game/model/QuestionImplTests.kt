@@ -30,53 +30,56 @@
 
 package com.raywenderlich.android.cocktails.game.model
 
-import org.junit.Assert
-import org.junit.Before
+import org.junit.Assert.*
 import org.junit.Test
 
-class QuestionUnitTests {
-  private lateinit var question: Question
+class QuestionImplTests {
 
-  @Before
-  fun setup() {
-    question = Question("CORRECT", "INCORRECT")
-  }
+    private var question = QuestionImpl("CORRECT", "INCORRECT")
 
-  @Test
-  fun whenCreatingQuestion_shouldNotHaveAnsweredOption() {
-    Assert.assertNull(question.answeredOption)
-  }
+    @Test
+    fun `new question does not have answered option`() {
+        assertNull(question.answeredOption)
+    }
 
-  @Test
-  fun whenAnswering_shouldHaveAnsweredOption() {
-    question.answer("INCORRECT")
+    @Test
+    fun `new question returns options in reversed order`() {
+        val options = question.getOptions { it.reversed() }
 
-    Assert.assertEquals("INCORRECT", question.answeredOption)
-  }
+        assertEquals(listOf("INCORRECT", "CORRECT"), options)
+    }
 
-  @Test
-  fun whenAnswering_withCorrectOption_shouldReturnTrue() {
-    val result = question.answer("CORRECT")
+    @Test
+    fun `new question returns options in shuffled order`() {
+        val options = question.getOptions { it.shuffled() }
 
-    Assert.assertTrue(result)
-  }
+        assertTrue(options.containsAll(listOf("INCORRECT", "CORRECT")))
+    }
 
-  @Test
-  fun whenAnswering_withIncorrectOption_shouldReturnFalse() {
-    val result = question.answer("INCORRECT")
+    @Test
+    fun `answered question has answered option`() {
+        question.answer("INCORRECT")
 
-    Assert.assertFalse(result)
-  }
+        assertEquals("INCORRECT", question.answeredOption)
+    }
 
-  @Test(expected = IllegalArgumentException::class)
-  fun whenAnswering_withInvalidOption_shouldThrowException() {
-    question.answer("INVALID")
-  }
+    @Test
+    fun `correct answer returns true`() {
+        val result = question.answer("CORRECT")
 
-  @Test
-  fun whenCreatingQuestion_shouldReturnOptionsWithCustomSort() {
-    val options = question.getOptions { it.reversed() }
+        assertTrue(result)
+    }
 
-    Assert.assertEquals(listOf("INCORRECT", "CORRECT"), options)
-  }
+    @Test
+    fun `incorrect answer returns false`() {
+        val result = question.answer("INCORRECT")
+
+        assertFalse(result)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `invalid answer throws exception`() {
+        question.answer("INVALID")
+    }
+
 }
