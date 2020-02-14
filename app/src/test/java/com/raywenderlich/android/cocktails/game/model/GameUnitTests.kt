@@ -30,58 +30,60 @@
 
 package com.raywenderlich.android.cocktails.game.model
 
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Test
 
 class GameUnitTests {
 
-  @Test
-  fun whenIncrementingScore_shouldIncrementCurrentScore() {
-    val game = Game(emptyList(), 0)
+    private val question1 = Question("CORRECT", "INCORRECT")
+    private val questions = listOf(question1)
 
-    game.incrementScore()
 
-    Assert.assertEquals("Current score should have been 1", 1, game.currentScore)
-  }
+    @Test
+    fun `when incrementing score should increment current score`() {
+        val game = Game(emptyList(), 0)
 
-  @Test
-  fun whenIncrementingScore_aboveHighScore_shouldAlsoIncrementHighScore() {
-    val game = Game(emptyList(), 0)
+        game.incrementScore()
 
-    game.incrementScore()
+        assertEquals("Current score should have been 1", 1, game.currentScore)
+    }
 
-    Assert.assertEquals(1, game.highestScore)
-  }
+    @Test
+    fun `when incrementing score above high score should also increment high score`() {
+        val game = Game(emptyList(), 0)
 
-  @Test
-  fun whenIncrementingScore_belowHighScore_shouldNotIncrementHighScore() {
-    val game = Game(emptyList(), 10)
+        game.incrementScore()
 
-    game.incrementScore()
+        assertEquals(1, game.highestScore)
+    }
 
-    Assert.assertEquals(10, game.highestScore)
-  }
+    @Test
+    fun whenIncrementingScore_belowHighScore_shouldNotIncrementHighScore() {
+        val game = Game(emptyList(), 10)
 
-  @Test
-  fun whenGettingNextQuestion_shouldReturnIt() {
-    val question1 = Question("CORRECT", "INCORRECT")
-    val questions = listOf(question1)
-    val game = Game(questions)
+        game.incrementScore()
 
-    val nextQuestion = game.nextQuestion()
+        assertEquals(10, game.highestScore)
+    }
 
-    Assert.assertSame(question1, nextQuestion)
-  }
+    @Test
+    fun whenGettingNextQuestion_shouldReturnIt() {
+        val game = Game(questions)
 
-  @Test
-  fun whenGettingNextQuestion_withoutMoreQuestions_shouldReturnNull() {
-    val question1 = Question("CORRECT", "INCORRECT")
-    val questions = listOf(question1)
-    val game = Game(questions)
+        val nextQuestion = game.nextQuestion()
 
-    game.nextQuestion()
-    val nextQuestion = game.nextQuestion()
+        assertSame(question1, nextQuestion)
+    }
 
-    Assert.assertNull(nextQuestion)
-  }
+    @Test
+    fun whenGettingNextQuestion_withoutMoreQuestions_shouldReturnNull() {
+        val game = Game(questions)
+
+        game.nextQuestion()
+        val nextQuestion = game.nextQuestion()
+
+        assertNull(nextQuestion)
+    }
+
+
 }
