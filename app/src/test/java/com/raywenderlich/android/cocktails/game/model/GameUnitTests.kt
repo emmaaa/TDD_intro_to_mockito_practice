@@ -33,8 +33,10 @@ package com.raywenderlich.android.cocktails.game.model
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.*
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyString
 
 class GameUnitTests {
 
@@ -98,4 +100,15 @@ class GameUnitTests {
         verify(question).answer(eq("OPTION"))
     }
 
+    @Test
+    fun `correct answer increments current score`() {
+        val question = mock<Question>()
+
+        whenever(question.answer(anyString())).thenReturn(true)
+        val game = Game(listOf(question))
+
+        game.answer(question, "OPTION")
+
+        assertEquals(1, game.currentScore)
+    }
 }

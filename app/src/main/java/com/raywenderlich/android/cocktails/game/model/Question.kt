@@ -39,6 +39,7 @@ class Question(private val correctOption: String, private val incorrectOption: S
         get() = correctOption == answeredOption
 
     fun answer(option: String): Boolean {
+
         if (option != correctOption && option != incorrectOption)
             throw IllegalArgumentException("Not a valid option")
 

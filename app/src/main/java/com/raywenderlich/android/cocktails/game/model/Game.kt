@@ -30,8 +30,8 @@
 
 package com.raywenderlich.android.cocktails.game.model
 
-class Game(private val questions: List<Question>,
-           highest: Int = 0) {
+class Game(private val questions: List<Question>, highest: Int = 0) {
+
     var currentScore = 0
         private set
 
@@ -57,6 +57,7 @@ class Game(private val questions: List<Question>,
 
     fun answer(question: Question, option: String) {
         question.answer(option)
+        incrementScore()
     }
 
 }
