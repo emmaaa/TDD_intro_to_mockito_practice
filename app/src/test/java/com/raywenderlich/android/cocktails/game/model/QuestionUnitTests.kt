@@ -34,7 +34,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class QuestionTests {
+class QuestionUnitTests {
   private lateinit var question: Question
 
   @Before

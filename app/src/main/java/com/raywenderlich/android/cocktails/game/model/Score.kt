@@ -10,8 +10,6 @@ class Score(highestScore: Int = 0) {
 
     fun increment() {
         current++
-        if (current > highest) {
-            highest = current
-        }
+        if (current > highest) highest = current
     }
 }

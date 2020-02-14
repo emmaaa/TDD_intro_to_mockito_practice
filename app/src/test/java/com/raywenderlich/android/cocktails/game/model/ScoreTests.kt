@@ -1,62 +1,64 @@
 package com.raywenderlich.android.cocktails.game.model
 
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyString
 
 class ScoreTests {
 
+    private val score = Score()
+
+    @Test
+    fun `incrementScore increments current score`() {
+        score.increment()
+
+        assertEquals("Current score should have been 1", 1, score.current)
+    }
+
     @Test
     fun `incrementScore also increments high score when above high score`() {
-        val game = Game(emptyList(), 0)
+        score.increment()
 
-        game.incrementScore()
-
-        assertEquals(1, game.highestScore)
+        assertEquals(1, score.highest)
     }
 
     @Test
     fun `incrementScore does not increment high score when below high score `() {
-        val game = Game(emptyList(), 10)
+        val score = Score(10)
 
-        game.incrementScore()
+        score.increment()
 
-        assertEquals(10, game.highestScore)
-    }
-
-    @Test
-    fun `incrementScore increments current score`() {
-        val game = Game(emptyList(), 0)
-
-        game.incrementScore()
-
-        assertEquals("Current score should have been 1", 1, game.currentScore)
+        assertEquals(10, score.highest)
     }
 
     @Test
     fun `correct answer increments current score`() {
         val question = mock<Question>()
 
-        whenever(question.answer(ArgumentMatchers.anyString())).thenReturn(true)
-        val game = Game(listOf(question))
+        whenever(question.answer(anyString())).thenReturn(true)
+        val score = mock<Score>()
+        val game = Game(listOf(question), score)
 
         game.answer(question, "OPTION")
 
-        assertEquals(1, game.currentScore)
+        verify(score).increment()
     }
 
     @Test
     fun `incorrect answer does not increment current score`() {
         val question = mock<Question>()
 
-        whenever(question.answer(ArgumentMatchers.anyString())).thenReturn(false)
+        whenever(question.answer(anyString())).thenReturn(false)
+        val score = mock<Score>()
         val game = Game(listOf(question))
 
         game.answer(question, "INCORRECT")
 
-        assertEquals(0, game.currentScore)
+        verify(score, never()).increment()
     }
 
 }
