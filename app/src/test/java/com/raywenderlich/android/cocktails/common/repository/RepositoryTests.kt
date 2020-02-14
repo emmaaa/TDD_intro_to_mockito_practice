@@ -12,12 +12,10 @@ class RepositoryUnitTests {
         val api: CocktailsApi = mock()
         val sharedPreferencesEditor: SharedPreferences.Editor = mock()
         val sharedPreferences: SharedPreferences = mock()
-
+        val repository = CocktailsRepositoryImpl(api, sharedPreferences)
+        val score = 100
         whenever(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor)
 
-        val repository = CocktailsRepositoryImpl(api, sharedPreferences)
-
-        val score = 100
         repository.saveHighScore(score)
 
         inOrder(sharedPreferencesEditor) {
