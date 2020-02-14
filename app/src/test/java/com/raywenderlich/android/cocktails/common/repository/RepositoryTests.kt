@@ -26,10 +26,24 @@ class RepositoryUnitTests {
     }
 
     @Test
-    fun `score can be read from preferences`() {
+    fun `high score is read from preferences`() {
         repository.getHighScore()
 
         verify(sharedPreferences).getInt(any(), any())
     }
 
+    @Test
+    fun `score is not saved when lower than high score`() {
+        val previouslySavedHighScore = 100
+        val newHighScore = 10
+        val spyRepository = spy(repository)
+        doReturn(previouslySavedHighScore)
+                .whenever(spyRepository)
+                .getHighScore()
+
+        spyRepository.saveHighScore(newHighScore)
+
+        verify(sharedPreferencesEditor, never())
+                .putInt(any(), eq(newHighScore))
+    }
 }
